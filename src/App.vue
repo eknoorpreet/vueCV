@@ -1,15 +1,17 @@
 <template>
   <main class="container">
-    <div id="resume" class="d-flex">
+    <EditToggle @edit-mode-toggled="toggleEditMode" />
+    <div id="resume" class="d-flex" :class="{ 'edit-off': !editing }">
       <div class="left-col">
         <ResumeSection>
           <img :src="imageUrl" alt="profile-pic" class="profile-pic" />
           <SectionHeadline
             :headline="headlines[0]"
             @headline-edited="updateHeadline($event, 0)"
+            :editing="editing"
           />
           <div
-            contenteditable="true"
+            :contenteditable="editing"
             @input="updateProperty($event, 'summary')"
           >
             {{ summary }}
@@ -19,19 +21,25 @@
           <SectionHeadline
             :headline="headlines[1]"
             @headline-edited="updateHeadline($event, 1)"
+            :editing="editing"
           />
-          <Contact :contact="contact" @edit="updateNestedProperty" />
+          <Contact
+            :contact="contact"
+            @edit="updateNestedProperty"
+            :editing="editing"
+          />
         </ResumeSection>
         <ResumeSection>
           <SectionHeadline
             :headline="headlines[2]"
             @headline-edited="updateHeadline($event, 2)"
+            :editing="editing"
           />
           <ul>
             <li
               v-for="(skill, index) in skills"
               :key="index"
-              contenteditable="true"
+              :contenteditable="editing"
               @input="updateNestedProperty($event, 'skills', index)"
             >
               {{ skill }}
@@ -47,12 +55,13 @@
           <SectionHeadline
             :headline="headlines[3]"
             @headline-edited="updateHeadline($event, 3)"
+            :editing="editing"
           />
           <ul>
             <li
               v-for="(certification, index) in certifications"
               :key="index"
-              contenteditable="true"
+              :contenteditable="editing"
               @input="updateNestedProperty($event, 'certifications', index)"
             >
               {{ certification }}
@@ -68,14 +77,14 @@
       <div class="right-col">
         <div
           class="personal-name"
-          contenteditable="true"
+          :contenteditable="editing"
           @input="updateProperty($event, 'name')"
         >
           {{ name }}
         </div>
         <div
           class="personal-title"
-          contenteditable="true"
+          :contenteditable="editing"
           @input="updateProperty($event, 'title')"
         >
           {{ title }}
@@ -85,6 +94,7 @@
             <SectionHeadline
               :headline="headlines[4]"
               @headline-edited="updateHeadline($event, 4)"
+              :editing="editing"
             />
             <EditButtons
               :showRemoveBtn="experience.length > 0"
@@ -99,7 +109,7 @@
           >
             <div class="d-flex justify-content-between">
               <div
-                contenteditable="true"
+                :contenteditable="editing"
                 @input="updateExperience($event, 'title', index)"
               >
                 {{ item.title }}
@@ -112,18 +122,18 @@
             <div class="d-flex justify-content-between">
               <div>
                 <span
-                  contenteditable="true"
+                  :contenteditable="editing"
                   @input="updateExperience($event, 'company', index)"
                   >{{ item.company }}</span
                 >,
                 <span
-                  contenteditable="true"
+                  :contenteditable="editing"
                   @input="updateExperience($event, 'location', index)"
                   >{{ item.location }}</span
                 >
               </div>
               <div
-                contenteditable="true"
+                :contenteditable="editing"
                 @input="updateExperience($event, 'date', index)"
               >
                 {{ item.date }}
@@ -133,7 +143,7 @@
               <li
                 v-for="(desc, innerIndex) in item.description"
                 :key="innerIndex"
-                contenteditable="true"
+                :contenteditable="editing"
                 @input="updateExperienceDescription($event, index, innerIndex)"
               >
                 {{ desc }}
@@ -151,6 +161,7 @@
             <SectionHeadline
               :headline="headlines[5]"
               @headline-edited="updateHeadline($event, 5)"
+              :editing="editing"
             />
             <EditButtons
               :showRemoveBtn="education.length > 0"
@@ -165,7 +176,7 @@
           >
             <div class="d-flex justify-content-between">
               <div
-                contenteditable="true"
+                :contenteditable="editing"
                 @input="updateEducation($event, 'title', index)"
               >
                 {{ item.title }}
@@ -179,13 +190,13 @@
             <div class="d-flex justify-content-between">
               <div>
                 <span
-                  contenteditable="true"
+                  :contenteditable="editing"
                   @input="updateEducation($event, 'university', index)"
                 >
                   {{ item.university }} </span
                 >,
                 <span
-                  contenteditable="true"
+                  :contenteditable="editing"
                   @input="updateEducation($event, 'location', index)"
                 >
                   {{ item.location }}
@@ -193,7 +204,7 @@
               </div>
 
               <div
-                contenteditable="true"
+                :contenteditable="editing"
                 @input="updateEducation($event, 'date', index)"
               >
                 {{ item.date }}
@@ -204,7 +215,7 @@
               <li
                 v-for="(desc, innerIndex) in item.description"
                 :key="innerIndex"
-                contenteditable="true"
+                :contenteditable="editing"
                 @input="updateEducationDescription($event, index, innerIndex)"
               >
                 {{ desc }}
@@ -227,6 +238,7 @@ import ResumeSection from './components/ResumeSection.vue';
 import SectionHeadline from './components/SectionHeadline.vue';
 import Contact from './components/Contact.vue';
 import EditButtons from './components/EditButtons.vue';
+import EditToggle from './components/EditToggle.vue';
 
 export default {
   components: {
@@ -234,6 +246,7 @@ export default {
     SectionHeadline,
     Contact,
     EditButtons,
+    EditToggle,
   },
   data() {
     return {
@@ -334,6 +347,7 @@ export default {
         'AWS Cloud Practitoner (Amazon Web Services)',
         'Vue JS Essentials with Vuex and Vue Router (Udemy)',
       ],
+      editing: true,
     };
   },
   methods: {
@@ -381,6 +395,9 @@ export default {
     },
     removeEducation(index) {
       this.education.splice(index, 1);
+    },
+    toggleEditMode(isChecked) {
+      this.editing = isChecked;
     },
   },
 };

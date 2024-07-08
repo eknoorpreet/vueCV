@@ -13,7 +13,7 @@
         />
       </svg>
       <span
-        contenteditable="true"
+        :contenteditable="editing"
         @input="$emit('edit', $event, 'contact', 'phone')"
       >
         {{ contact.phone }}
@@ -32,7 +32,7 @@
         />
       </svg>
       <span
-        contenteditable="true"
+        :contenteditable="editing"
         @input="$emit('edit', $event, 'contact', 'email')"
       >
         {{ contact.email }}
@@ -51,7 +51,7 @@
         />
       </svg>
       <span
-        contenteditable="true"
+        :contenteditable="editing"
         @input="$emit('edit', $event, 'contact', 'address')"
       >
         {{ contact.address }}
@@ -62,7 +62,15 @@
 
 <script>
 export default {
-  props: ['contact'],
+  props: {
+    contact: {
+      type: Object,
+    },
+    editing: {
+      type: Boolean,
+      default: true,
+    },
+  },
 };
 </script>
 
