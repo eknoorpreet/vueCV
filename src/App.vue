@@ -41,6 +41,28 @@
         :current-value="widthLeft"
         @percentage-changed="widthLeft = $event"
       />
+
+      <SelectInput
+        label="Headline thickness"
+        @update-selection="headlineWeight = $event"
+        :default-option="headlineWeight"
+        :options="[
+          { name: 'Thin', value: '300' },
+          { name: 'Medium', value: '400' },
+          { name: 'Thick', value: '600' },
+        ]"
+      />
+
+      <SelectInput
+        label="Photo shape"
+        @update-selection="imageShape = $event"
+        :default-option="imageShape"
+        headlineWeight
+        :options="[
+          { name: 'Square', value: 'square' },
+          { name: 'Round', value: 'round' },
+        ]"
+      />
     </Sidebar>
     <div
       id="resume"
@@ -50,7 +72,12 @@
     >
       <div class="left-col" :style="{ width: percentageWidthLeft }">
         <ResumeSection>
-          <img :src="imageUrl" alt="profile-pic" class="profile-pic" />
+          <img
+            :src="imageUrl"
+            alt="profile-pic"
+            class="profile-pic"
+            :class="{ circle: imageShape == 'round' }"
+          />
           <SectionHeadline
             :headline="headlines[0]"
             @headline-edited="updateHeadline($event, 0)"
@@ -289,6 +316,7 @@ import EditToggle from './components/EditToggle.vue';
 import Sidebar from './components/Sidebar.vue';
 import ColorInput from './components/ColorInput.vue';
 import PercentageInput from './components/PercentageInput.vue';
+import SelectInput from './components/SelectInput.vue';
 
 export default {
   components: {
@@ -300,6 +328,7 @@ export default {
     Sidebar,
     ColorInput,
     PercentageInput,
+    SelectInput,
   },
   data() {
     return {
@@ -414,6 +443,8 @@ export default {
       ],
       editing: true,
       widthLeft: 30,
+      imageShape: 'round',
+      headlineWeight: '400',
     };
   },
   computed: {
@@ -425,6 +456,7 @@ export default {
         '--highlight-color-right': this.colors.right.highlight,
         '--background-color-right': this.colors.right.background,
         '--text-color-right': this.colors.right.text,
+        '--headline-weight': this.headlineWeight,
       };
     },
     percentageWidthLeft() {
@@ -577,6 +609,9 @@ export default {
   object-fit: cover;
   margin-left: auto;
   margin-right: auto;
+}
+
+.circle {
   border-radius: 50%;
 }
 
