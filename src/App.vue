@@ -34,6 +34,13 @@
         :default-color="colors.right.text"
         @color-changed="colors.right.text = $event"
       />
+      <PercentageInput
+        label="Width of left column"
+        :min="20"
+        :max="80"
+        :current-value="widthLeft"
+        @percentage-changed="widthLeft = $event"
+      />
     </Sidebar>
     <div
       id="resume"
@@ -41,7 +48,7 @@
       :class="{ 'edit-off': !editing }"
       :style="cssVariables"
     >
-      <div class="left-col">
+      <div class="left-col" :style="{ width: percentageWidthLeft }">
         <ResumeSection>
           <img :src="imageUrl" alt="profile-pic" class="profile-pic" />
           <SectionHeadline
@@ -281,6 +288,7 @@ import EditButtons from './components/EditButtons.vue';
 import EditToggle from './components/EditToggle.vue';
 import Sidebar from './components/Sidebar.vue';
 import ColorInput from './components/ColorInput.vue';
+import PercentageInput from './components/PercentageInput.vue';
 
 export default {
   components: {
@@ -291,6 +299,7 @@ export default {
     EditToggle,
     Sidebar,
     ColorInput,
+    PercentageInput,
   },
   data() {
     return {
@@ -404,6 +413,7 @@ export default {
         'Vue JS Essentials with Vuex and Vue Router (Udemy)',
       ],
       editing: true,
+      widthLeft: 30,
     };
   },
   computed: {
@@ -416,6 +426,9 @@ export default {
         '--background-color-right': this.colors.right.background,
         '--text-color-right': this.colors.right.text,
       };
+    },
+    percentageWidthLeft() {
+      return `${this.widthLeft}%`;
     },
   },
   methods: {
@@ -501,7 +514,6 @@ export default {
   background-color: var(--background-color-left);
   color: var(--text-color-left);
   border-right: 1px solid var(--highlight-color-left);
-  width: 30%;
   padding: 30px;
 }
 

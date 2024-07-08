@@ -28,3 +28,18 @@ body {
   background-color: #cacaca71;
   padding: 2px;
 }
+
+.custom-input {
+  padding: 6px 12px;
+  background-color: #fff;
+  border: 1px solid #ced4da;
+  color: #495057;
+  border-radius: 4px;
+  font-size: 16px;
+  line-height: 24px;
+}
+
+input:focus {
+  outline-color: #82c0cc;
+  border-color: #82c0cc;
+}
