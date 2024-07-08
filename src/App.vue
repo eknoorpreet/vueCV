@@ -5,6 +5,7 @@
         @switch-toggled="toggleEditMode"
         label="Edit mode"
         off-label="Export Mode"
+        :toggle-active="editing"
       />
       <div class="sidebar-section" v-if="!editing">
         <SelectInput
@@ -76,7 +77,11 @@
       </div>
 
       <div class="sidebar-section" v-if="editing">
-        <ToggleSwitch @switch-toggled="toggleImageDisplay" label="Show photo" />
+        <ToggleSwitch
+          @switch-toggled="toggleImageDisplay"
+          label="Show photo"
+          :toggle-active="showImage"
+        />
 
         <SelectInput
           label="Photo shape"
@@ -359,9 +364,19 @@ import SelectInput from './components/SelectInput.vue';
 import ImageUpload from './components/ImageUpload.vue';
 import CustomButton from './components/CustomButton.vue';
 import ExportPDF from './components/ExportPDF.vue';
-import CustomButton from './components/CustomButton.vue';
 
 export default {
+  created() {
+    const savedResume = localStorage.getItem('resume');
+    if (savedResume) {
+      try {
+        const resume = JSON.parse(savedResume);
+        this.loadIntoData(resume);
+      } catch (error) {
+        console.error('Error parsing resume data:', error);
+      }
+    }
+  },
   components: {
     ResumeSection,
     SectionHeadline,
@@ -566,6 +581,13 @@ export default {
     },
     saveConfig() {
       localStorage.setItem('resume', JSON.stringify(this.$data));
+    },
+    loadIntoData(config) {
+      for (const key in config) {
+        if (this.$data.hasOwnProperty(key)) {
+          this[key] = config[key];
+        }
+      }
     },
   },
 };
