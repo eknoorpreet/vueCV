@@ -2,7 +2,7 @@
   <main class="container">
     <div id="resume" class="d-flex">
       <div class="left-col">
-        <div class="resume-section">
+        <ResumeSection>
           <img :src="imageUrl" alt="profile-pic" class="profile-pic" />
           <h4
             class="section-headline"
@@ -17,8 +17,8 @@
           >
             {{ summary }}
           </div>
-        </div>
-        <div class="resume-section">
+        </ResumeSection>
+        <ResumeSection>
           <h4
             class="section-headline"
             contenteditable="true"
@@ -46,8 +46,8 @@
               {{ contact.address }}
             </li>
           </ul>
-        </div>
-        <div class="resume-section">
+        </ResumeSection>
+        <ResumeSection>
           <h4
             class="section-headline"
             contenteditable="true"
@@ -65,8 +65,8 @@
               {{ skill }}
             </li>
           </ul>
-        </div>
-        <div class="resume-section">
+        </ResumeSection>
+        <ResumeSection>
           <h4
             class="section-headline"
             contenteditable="true"
@@ -84,7 +84,7 @@
               {{ certification }}
             </li>
           </ul>
-        </div>
+        </ResumeSection>
       </div>
       <div class="right-col">
         <div
@@ -101,7 +101,7 @@
         >
           {{ title }}
         </div>
-        <div class="resume-section">
+        <ResumeSection>
           <h4
             class="section-headline"
             contenteditable="true"
@@ -151,8 +151,8 @@
               </li>
             </ul>
           </div>
-        </div>
-        <div class="resume-section">
+        </ResumeSection>
+        <ResumeSection>
           <h4
             class="section-headline"
             contenteditable="true"
@@ -207,14 +207,19 @@
               </li>
             </ul>
           </div>
-        </div>
+        </ResumeSection>
       </div>
     </div>
   </main>
 </template>
 
 <script>
+import ResumeSection from './components/ResumeSection.vue';
+
 export default {
+  components: {
+    ResumeSection,
+  },
   data() {
     return {
       name: 'Eknoorpreet Singh',
@@ -382,10 +387,6 @@ export default {
 
 .right-col .section-headline {
   color: var(--highlight-color-right);
-}
-
-.resume-section {
-  margin-bottom: 30px;
 }
 
 .personal-name {
