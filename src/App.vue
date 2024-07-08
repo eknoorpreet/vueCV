@@ -4,13 +4,10 @@
       <div class="left-col">
         <ResumeSection>
           <img :src="imageUrl" alt="profile-pic" class="profile-pic" />
-          <h4
-            class="section-headline"
-            contenteditable="true"
-            @input="updateHeadline($event, 0)"
-          >
-            {{ headlines[0] }}
-          </h4>
+          <SectionHeadline
+            :headline="headlines[0]"
+            @headline-edited="updateHeadline($event, 0)"
+          />
           <div
             contenteditable="true"
             @input="updateProperty($event, 'summary')"
@@ -19,42 +16,17 @@
           </div>
         </ResumeSection>
         <ResumeSection>
-          <h4
-            class="section-headline"
-            contenteditable="true"
-            @input="updateHeadline($event, 1)"
-          >
-            {{ headlines[1] }}
-          </h4>
-          <ul>
-            <li
-              contenteditable="true"
-              @input="updateNestedProperty($event, 'contact', 'phone')"
-            >
-              {{ contact.phone }}
-            </li>
-            <li
-              contenteditable="true"
-              @input="updateNestedProperty($event, 'contact', 'email')"
-            >
-              {{ contact.email }}
-            </li>
-            <li
-              contenteditable="true"
-              @input="updateNestedProperty($event, 'contact', 'address')"
-            >
-              {{ contact.address }}
-            </li>
-          </ul>
+          <SectionHeadline
+            :headline="headlines[1]"
+            @headline-edited="updateHeadline($event, 1)"
+          />
+          <Contact :contact="contact" @edit="updateNestedProperty" />
         </ResumeSection>
         <ResumeSection>
-          <h4
-            class="section-headline"
-            contenteditable="true"
-            @input="updateHeadline($event, 2)"
-          >
-            {{ headlines[2] }}
-          </h4>
+          <SectionHeadline
+            :headline="headlines[2]"
+            @headline-edited="updateHeadline($event, 2)"
+          />
           <ul>
             <li
               v-for="(skill, index) in skills"
@@ -67,13 +39,10 @@
           </ul>
         </ResumeSection>
         <ResumeSection>
-          <h4
-            class="section-headline"
-            contenteditable="true"
-            @input="updateHeadline($event, 3)"
-          >
-            {{ headlines[3] }}
-          </h4>
+          <SectionHeadline
+            :headline="headlines[3]"
+            @headline-edited="updateHeadline($event, 3)"
+          />
           <ul>
             <li
               v-for="(certification, index) in certifications"
@@ -102,13 +71,10 @@
           {{ title }}
         </div>
         <ResumeSection>
-          <h4
-            class="section-headline"
-            contenteditable="true"
-            @input="updateHeadline($event, 4)"
-          >
-            {{ headlines[4] }}
-          </h4>
+          <SectionHeadline
+            :headline="headlines[4]"
+            @headline-edited="updateHeadline($event, 4)"
+          />
           <div
             v-for="(item, index) in experience"
             :key="index"
@@ -153,13 +119,10 @@
           </div>
         </ResumeSection>
         <ResumeSection>
-          <h4
-            class="section-headline"
-            contenteditable="true"
-            @input="updateHeadline($event, 5)"
-          >
-            {{ headlines[5] }}
-          </h4>
+          <SectionHeadline
+            :headline="headlines[5]"
+            @headline-edited="updateHeadline($event, 5)"
+          />
           <div
             v-for="(item, index) in education"
             :key="index"
@@ -215,10 +178,14 @@
 
 <script>
 import ResumeSection from './components/ResumeSection.vue';
+import SectionHeadline from './components/SectionHeadline.vue';
+import Contact from './components/Contact.vue';
 
 export default {
   components: {
     ResumeSection,
+    SectionHeadline,
+    Contact,
   },
   data() {
     return {
@@ -322,8 +289,8 @@ export default {
     };
   },
   methods: {
-    updateHeadline(event, index) {
-      this.headlines[index] = event.target.innerText;
+    updateHeadline(newValue, index) {
+      this.headlines[index] = newValue;
     },
     updateProperty(event, key) {
       this[key] = event.target.innerText;
