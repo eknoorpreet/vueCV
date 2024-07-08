@@ -5,7 +5,7 @@
         xmlns="http://www.w3.org/2000/svg"
         height="16"
         width="16"
-        fill="#fff"
+        :fill="iconColor"
         viewBox="0 0 512 512"
       >
         <path
@@ -24,7 +24,7 @@
         xmlns="http://www.w3.org/2000/svg"
         height="16"
         width="16"
-        fill="#fff"
+        :fill="iconColor"
         viewBox="0 0 512 512"
       >
         <path
@@ -43,7 +43,7 @@
         xmlns="http://www.w3.org/2000/svg"
         height="16"
         width="18"
-        fill="#fff"
+        :fill="iconColor"
         viewBox="0 0 576 512"
       >
         <path
@@ -69,6 +69,10 @@ export default {
     editing: {
       type: Boolean,
       default: true,
+    },
+    iconColor: {
+      type: String,
+      default: '#ffffff',
     },
   },
 };

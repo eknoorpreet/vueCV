@@ -17,7 +17,7 @@ body {
   --highlight-color-left: #82c0cc;
   --background-color-left: #3943b7;
   --text-color-left: #ffffff;
-  --highlight-color-right: #3943b7;
+  /* --highlight-color-right: #3943b7; */
   --background-color-right: #ffffff;
   --text-color-right: #000505;
   --color-black: #050517;

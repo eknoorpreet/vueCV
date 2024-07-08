@@ -1,7 +1,46 @@
 <template>
   <main class="container">
-    <EditToggle @edit-mode-toggled="toggleEditMode" />
-    <div id="resume" class="d-flex" :class="{ 'edit-off': !editing }">
+    <Sidebar>
+      <EditToggle @edit-mode-toggled="toggleEditMode" />
+      <div>Left column</div>
+      <ColorInput
+        label="Highlight color"
+        :default-color="colors.left.highlight"
+        @color-changed="colors.left.highlight = $event"
+      />
+      <ColorInput
+        label="Background color"
+        :default-color="colors.left.background"
+        @color-changed="colors.left.background = $event"
+      />
+      <ColorInput
+        label="Text color"
+        :default-color="colors.left.text"
+        @color-changed="colors.left.text = $event"
+      />
+      <div>Right column</div>
+      <ColorInput
+        label="Highlight color"
+        :default-color="colors.right.highlight"
+        @color-changed="colors.right.highlight = $event"
+      />
+      <ColorInput
+        label="Background color"
+        :default-color="colors.right.background"
+        @color-changed="colors.right.background = $event"
+      />
+      <ColorInput
+        label="Text color"
+        :default-color="colors.right.text"
+        @color-changed="colors.right.text = $event"
+      />
+    </Sidebar>
+    <div
+      id="resume"
+      class="d-flex"
+      :class="{ 'edit-off': !editing }"
+      :style="cssVariables"
+    >
       <div class="left-col">
         <ResumeSection>
           <img :src="imageUrl" alt="profile-pic" class="profile-pic" />
@@ -27,6 +66,7 @@
             :contact="contact"
             @edit="updateNestedProperty"
             :editing="editing"
+            :icon-color="colors.left.highlight"
           />
         </ResumeSection>
         <ResumeSection>
@@ -239,6 +279,8 @@ import SectionHeadline from './components/SectionHeadline.vue';
 import Contact from './components/Contact.vue';
 import EditButtons from './components/EditButtons.vue';
 import EditToggle from './components/EditToggle.vue';
+import Sidebar from './components/Sidebar.vue';
+import ColorInput from './components/ColorInput.vue';
 
 export default {
   components: {
@@ -247,9 +289,23 @@ export default {
     Contact,
     EditButtons,
     EditToggle,
+    Sidebar,
+    ColorInput,
   },
   data() {
     return {
+      colors: {
+        left: {
+          highlight: '#82C0CC',
+          text: '#ffffff',
+          background: '#3943B7',
+        },
+        right: {
+          highlight: '#3943B7',
+          text: '#000505',
+          background: '#ffffff',
+        },
+      },
       name: 'Eknoorpreet Singh',
       title: 'Software Engineer (Front-end)',
       summary:
@@ -350,6 +406,18 @@ export default {
       editing: true,
     };
   },
+  computed: {
+    cssVariables() {
+      return {
+        '--highlight-color-left': this.colors.left.highlight,
+        '--background-color-left': this.colors.left.background,
+        '--text-color-left': this.colors.left.text,
+        '--highlight-color-right': this.colors.right.highlight,
+        '--background-color-right': this.colors.right.background,
+        '--text-color-right': this.colors.right.text,
+      };
+    },
+  },
   methods: {
     updateHeadline(newValue, index) {
       this.headlines[index] = newValue;
@@ -409,7 +477,24 @@ export default {
     rgba(0, 0, 0, 0.3) 0 8px 16px -8px;
   /* height: 297mm; */
   width: 210mm;
-  margin: 0 auto;
+  margin-left: auto;
+}
+
+#resume.edit-off {
+  height: 297mm;
+}
+
+@media (min-width: 1350px) {
+  #resume {
+    margin-left: 300px;
+  }
+}
+
+@media (min-width: 1600px) {
+  #resume {
+    margin-left: auto;
+    margin-right: auto;
+  }
 }
 
 .left-col {
