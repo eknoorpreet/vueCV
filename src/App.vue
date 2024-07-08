@@ -1,68 +1,80 @@
 <template>
   <main class="container">
     <Sidebar>
-      <EditToggle @edit-mode-toggled="toggleEditMode" />
-      <div>Left column</div>
-      <ColorInput
-        label="Highlight color"
-        :default-color="colors.left.highlight"
-        @color-changed="colors.left.highlight = $event"
-      />
-      <ColorInput
-        label="Background color"
-        :default-color="colors.left.background"
-        @color-changed="colors.left.background = $event"
-      />
-      <ColorInput
-        label="Text color"
-        :default-color="colors.left.text"
-        @color-changed="colors.left.text = $event"
-      />
-      <div>Right column</div>
-      <ColorInput
-        label="Highlight color"
-        :default-color="colors.right.highlight"
-        @color-changed="colors.right.highlight = $event"
-      />
-      <ColorInput
-        label="Background color"
-        :default-color="colors.right.background"
-        @color-changed="colors.right.background = $event"
-      />
-      <ColorInput
-        label="Text color"
-        :default-color="colors.right.text"
-        @color-changed="colors.right.text = $event"
-      />
-      <PercentageInput
-        label="Width of left column"
-        :min="20"
-        :max="80"
-        :current-value="widthLeft"
-        @percentage-changed="widthLeft = $event"
-      />
+      <ToggleSwitch @switch-toggled="toggleEditMode" label="Edit mode" />
+      <div class="sidebar-section">
+        <div class="sidebar-title">Left column</div>
+        <ColorInput
+          label="Highlight color"
+          :default-color="colors.left.highlight"
+          @color-changed="colors.left.highlight = $event"
+        />
+        <ColorInput
+          label="Background color"
+          :default-color="colors.left.background"
+          @color-changed="colors.left.background = $event"
+        />
+        <ColorInput
+          label="Text color"
+          :default-color="colors.left.text"
+          @color-changed="colors.left.text = $event"
+        />
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-title">Right column</div>
+        <ColorInput
+          label="Highlight color"
+          :default-color="colors.right.highlight"
+          @color-changed="colors.right.highlight = $event"
+        />
+        <ColorInput
+          label="Background color"
+          :default-color="colors.right.background"
+          @color-changed="colors.right.background = $event"
+        />
+        <ColorInput
+          label="Text color"
+          :default-color="colors.right.text"
+          @color-changed="colors.right.text = $event"
+        />
+      </div>
+      <div class="sidebar-section">
+        <PercentageInput
+          label="Width of left column"
+          :min="20"
+          :max="80"
+          :current-value="widthLeft"
+          @percentage-changed="widthLeft = $event"
+        />
 
-      <SelectInput
-        label="Headline thickness"
-        @update-selection="headlineWeight = $event"
-        :default-option="headlineWeight"
-        :options="[
-          { name: 'Thin', value: '300' },
-          { name: 'Medium', value: '400' },
-          { name: 'Thick', value: '600' },
-        ]"
-      />
+        <SelectInput
+          label="Headline thickness"
+          @update-selection="headlineWeight = $event"
+          :default-option="headlineWeight"
+          :options="[
+            { name: 'Thin', value: '300' },
+            { name: 'Medium', value: '400' },
+            { name: 'Thick', value: '600' },
+          ]"
+        />
+      </div>
 
-      <SelectInput
-        label="Photo shape"
-        @update-selection="imageShape = $event"
-        :default-option="imageShape"
-        headlineWeight
-        :options="[
-          { name: 'Square', value: 'square' },
-          { name: 'Round', value: 'round' },
-        ]"
-      />
+      <div class="sidebar-section">
+        <ToggleSwitch @switch-toggled="toggleImageDisplay" label="Show photo" />
+
+        <SelectInput
+          label="Photo shape"
+          @update-selection="imageShape = $event"
+          :default-option="imageShape"
+          headlineWeight
+          :options="[
+            { name: 'Square', value: 'square' },
+            { name: 'Round', value: 'round' },
+          ]"
+        />
+
+        <ImageUpload @image-changed="imageUrl = $event" />
+      </div>
     </Sidebar>
     <div
       id="resume"
@@ -73,6 +85,7 @@
       <div class="left-col" :style="{ width: percentageWidthLeft }">
         <ResumeSection>
           <img
+            v-if="showImage"
             :src="imageUrl"
             alt="profile-pic"
             class="profile-pic"
@@ -312,11 +325,12 @@ import ResumeSection from './components/ResumeSection.vue';
 import SectionHeadline from './components/SectionHeadline.vue';
 import Contact from './components/Contact.vue';
 import EditButtons from './components/EditButtons.vue';
-import EditToggle from './components/EditToggle.vue';
+import ToggleSwitch from './components/ToggleSwitch.vue';
 import Sidebar from './components/Sidebar.vue';
 import ColorInput from './components/ColorInput.vue';
 import PercentageInput from './components/PercentageInput.vue';
 import SelectInput from './components/SelectInput.vue';
+import ImageUpload from './components/ImageUpload.vue';
 
 export default {
   components: {
@@ -324,11 +338,12 @@ export default {
     SectionHeadline,
     Contact,
     EditButtons,
-    EditToggle,
+    ToggleSwitch,
     Sidebar,
     ColorInput,
     PercentageInput,
     SelectInput,
+    ImageUpload,
   },
   data() {
     return {
@@ -445,6 +460,7 @@ export default {
       widthLeft: 30,
       imageShape: 'round',
       headlineWeight: '400',
+      showImage: true,
     };
   },
   computed: {
@@ -511,6 +527,9 @@ export default {
     },
     toggleEditMode(isChecked) {
       this.editing = isChecked;
+    },
+    toggleImageDisplay(isChecked) {
+      this.showImage = isChecked;
     },
   },
 };
