@@ -36,6 +36,11 @@
             >
               {{ skill }}
             </li>
+            <EditButtons
+              @addClick="skills.push('new entry')"
+              @removeClick="skills.pop()"
+              :showRemoveBtn="skills.length > 0"
+            />
           </ul>
         </ResumeSection>
         <ResumeSection>
@@ -52,6 +57,11 @@
             >
               {{ certification }}
             </li>
+            <EditButtons
+              @addClick="certifications.push('new entry')"
+              @removeClick="certifications.pop()"
+              :showRemoveBtn="certifications.length > 0"
+            />
           </ul>
         </ResumeSection>
       </div>
@@ -71,20 +81,33 @@
           {{ title }}
         </div>
         <ResumeSection>
-          <SectionHeadline
-            :headline="headlines[4]"
-            @headline-edited="updateHeadline($event, 4)"
-          />
+          <div class="d-flex">
+            <SectionHeadline
+              :headline="headlines[4]"
+              @headline-edited="updateHeadline($event, 4)"
+            />
+            <EditButtons
+              :showRemoveBtn="experience.length > 0"
+              @addClick="addExperience"
+              textAdd="Add Experience"
+            />
+          </div>
           <div
             v-for="(item, index) in experience"
             :key="index"
             class="inner-section"
           >
-            <div
-              contenteditable="true"
-              @input="updateEducation($event, 'title', index)"
-            >
-              {{ item.title }}
+            <div class="d-flex justify-content-between">
+              <div
+                contenteditable="true"
+                @input="updateExperience($event, 'title', index)"
+              >
+                {{ item.title }}
+              </div>
+              <EditButtons
+                @remove-click="removeExperience(index)"
+                :showAddBtn="false"
+              />
             </div>
             <div class="d-flex justify-content-between">
               <div>
@@ -115,24 +138,42 @@
               >
                 {{ desc }}
               </li>
+              <EditButtons
+                @addClick="item.description.push('new entry')"
+                @removeClick="item.description.pop()"
+                :showRemoveBtn="item.description.length > 0"
+              />
             </ul>
           </div>
         </ResumeSection>
         <ResumeSection>
-          <SectionHeadline
-            :headline="headlines[5]"
-            @headline-edited="updateHeadline($event, 5)"
-          />
+          <div class="d-flex">
+            <SectionHeadline
+              :headline="headlines[5]"
+              @headline-edited="updateHeadline($event, 5)"
+            />
+            <EditButtons
+              :showRemoveBtn="education.length > 0"
+              @addClick="addEducation"
+              textAdd="Add Education"
+            />
+          </div>
           <div
             v-for="(item, index) in education"
             :key="index"
             class="inner-section"
           >
-            <div
-              contenteditable="true"
-              @input="updateEducation($event, 'title', index)"
-            >
-              {{ item.title }}
+            <div class="d-flex justify-content-between">
+              <div
+                contenteditable="true"
+                @input="updateEducation($event, 'title', index)"
+              >
+                {{ item.title }}
+              </div>
+              <EditButtons
+                @remove-click="removeEducation(index)"
+                :showAddBtn="false"
+              />
             </div>
 
             <div class="d-flex justify-content-between">
@@ -168,6 +209,11 @@
               >
                 {{ desc }}
               </li>
+              <EditButtons
+                @addClick="item.description.push('new entry')"
+                @removeClick="item.description.pop()"
+                :showRemoveBtn="item.description.length > 0"
+              />
             </ul>
           </div>
         </ResumeSection>
@@ -180,12 +226,14 @@
 import ResumeSection from './components/ResumeSection.vue';
 import SectionHeadline from './components/SectionHeadline.vue';
 import Contact from './components/Contact.vue';
+import EditButtons from './components/EditButtons.vue';
 
 export default {
   components: {
     ResumeSection,
     SectionHeadline,
     Contact,
+    EditButtons,
   },
   data() {
     return {
@@ -310,6 +358,30 @@ export default {
     updateEducationDescription(event, index1, index2) {
       this.education[index1]['description'][index2] = event.target.innerText;
     },
+    addExperience() {
+      this.experience.unshift({
+        title: 'Job Title',
+        company: 'Company',
+        location: 'Location',
+        date: 'date range',
+        description: ['description'],
+      });
+    },
+    addEducation() {
+      this.education.unshift({
+        title: 'Education title',
+        university: 'University',
+        location: 'Location',
+        date: 'date range',
+        description: ['Summa cum laude, GPA 3.0'],
+      });
+    },
+    removeExperience(index) {
+      this.experience.splice(index, 1);
+    },
+    removeEducation(index) {
+      this.education.splice(index, 1);
+    },
   },
 };
 </script>
@@ -318,8 +390,9 @@ export default {
 #resume {
   box-shadow: rgba(50, 50, 93, 0.25) 0 13px 27px -5px,
     rgba(0, 0, 0, 0.3) 0 8px 16px -8px;
-  height: 297mm;
+  /* height: 297mm; */
   width: 210mm;
+  margin: 0 auto;
 }
 
 .left-col {
@@ -377,7 +450,7 @@ export default {
 
 #resume ul {
   padding-inline-start: 16px;
-  margin-block-end: 0px;
+  margin-block-end: 5px;
   margin-block-start: 5px;
 }
 
