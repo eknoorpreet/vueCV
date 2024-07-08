@@ -4,51 +4,148 @@
       <div class="left-col">
         <div class="resume-section">
           <img :src="imageUrl" alt="profile-pic" class="profile-pic" />
-          <h4 class="section-headline">{{ headlines[0] }}</h4>
-          <div>
+          <h4
+            class="section-headline"
+            contenteditable="true"
+            @input="updateHeadline($event, 0)"
+          >
+            {{ headlines[0] }}
+          </h4>
+          <div
+            contenteditable="true"
+            @input="updateProperty($event, 'summary')"
+          >
             {{ summary }}
           </div>
         </div>
         <div class="resume-section">
-          <h4 class="section-headline">{{ headlines[1] }}</h4>
+          <h4
+            class="section-headline"
+            contenteditable="true"
+            @input="updateHeadline($event, 1)"
+          >
+            {{ headlines[1] }}
+          </h4>
           <ul>
-            <li>{{ contact.phone }}</li>
-            <li>{{ contact.email }}</li>
-            <li>{{ contact.address }}</li>
+            <li
+              contenteditable="true"
+              @input="updateNestedProperty($event, 'contact', 'phone')"
+            >
+              {{ contact.phone }}
+            </li>
+            <li
+              contenteditable="true"
+              @input="updateNestedProperty($event, 'contact', 'email')"
+            >
+              {{ contact.email }}
+            </li>
+            <li
+              contenteditable="true"
+              @input="updateNestedProperty($event, 'contact', 'address')"
+            >
+              {{ contact.address }}
+            </li>
           </ul>
         </div>
         <div class="resume-section">
-          <h4 class="section-headline">{{ headlines[2] }}</h4>
+          <h4
+            class="section-headline"
+            contenteditable="true"
+            @input="updateHeadline($event, 2)"
+          >
+            {{ headlines[2] }}
+          </h4>
           <ul>
-            <li v-for="(skill, index) in skills" :key="index">{{ skill }}</li>
+            <li
+              v-for="(skill, index) in skills"
+              :key="index"
+              contenteditable="true"
+              @input="updateNestedProperty($event, 'skills', index)"
+            >
+              {{ skill }}
+            </li>
           </ul>
         </div>
         <div class="resume-section">
-          <h4 class="section-headline">{{ headlines[3] }}</h4>
+          <h4
+            class="section-headline"
+            contenteditable="true"
+            @input="updateHeadline($event, 3)"
+          >
+            {{ headlines[3] }}
+          </h4>
           <ul>
-            <li>AWS Cloud Practioner (Amazon Web Services)</li>
+            <li
+              v-for="(certification, index) in certifications"
+              :key="index"
+              contenteditable="true"
+              @input="updateNestedProperty($event, 'certifications', index)"
+            >
+              {{ certification }}
+            </li>
           </ul>
         </div>
       </div>
       <div class="right-col">
-        <div class="personal-name">Eknoorpreet Singh</div>
-        <div class="personal-title">Software Engineer (Front-end)</div>
+        <div
+          class="personal-name"
+          contenteditable="true"
+          @input="updateProperty($event, 'name')"
+        >
+          {{ name }}
+        </div>
+        <div
+          class="personal-title"
+          contenteditable="true"
+          @input="updateProperty($event, 'title')"
+        >
+          {{ title }}
+        </div>
         <div class="resume-section">
-          <h4 class="section-headline">{{ headlines[4] }}</h4>
+          <h4
+            class="section-headline"
+            contenteditable="true"
+            @input="updateHeadline($event, 4)"
+          >
+            {{ headlines[4] }}
+          </h4>
           <div
             v-for="(item, index) in experience"
             :key="index"
             class="inner-section"
           >
-            <div>{{ item.title }}</div>
+            <div
+              contenteditable="true"
+              @input="updateEducation($event, 'title', index)"
+            >
+              {{ item.title }}
+            </div>
             <div class="d-flex justify-content-between">
-              <div>{{ item.company }}, {{ item.location }}</div>
-              <div>{{ item.date }}</div>
+              <div>
+                <span
+                  contenteditable="true"
+                  @input="updateExperience($event, 'company', index)"
+                  >{{ item.company }}</span
+                >,
+                <span
+                  contenteditable="true"
+                  @input="updateExperience($event, 'location', index)"
+                  >{{ item.location }}</span
+                >
+              </div>
+              <div
+                contenteditable="true"
+                @input="updateExperience($event, 'date', index)"
+              >
+                {{ item.date }}
+              </div>
             </div>
             <ul>
               <li
                 v-for="(desc, innerIndex) in item.description"
                 :key="innerIndex"
+                contenteditable="true"
+                @input="updateExperienceDescription($event, index, innerIndex)"
               >
                 {{ desc }}
               </li>
@@ -56,17 +153,55 @@
           </div>
         </div>
         <div class="resume-section">
-          <h4 class="section-headline">{{ headlines[5] }}</h4>
-          <div v-for="(item, index) in education" :key="index">
-            <div>{{ item.title }}</div>
-            <div class="d-flex justify-content-between">
-              <div>{{ item.university }}, {{ item.location }}</div>
-              <div>{{ item.date }}</div>
+          <h4
+            class="section-headline"
+            contenteditable="true"
+            @input="updateHeadline($event, 5)"
+          >
+            {{ headlines[5] }}
+          </h4>
+          <div
+            v-for="(item, index) in education"
+            :key="index"
+            class="inner-section"
+          >
+            <div
+              contenteditable="true"
+              @input="updateEducation($event, 'title', index)"
+            >
+              {{ item.title }}
             </div>
+
+            <div class="d-flex justify-content-between">
+              <div>
+                <span
+                  contenteditable="true"
+                  @input="updateEducation($event, 'university', index)"
+                >
+                  {{ item.university }} </span
+                >,
+                <span
+                  contenteditable="true"
+                  @input="updateEducation($event, 'location', index)"
+                >
+                  {{ item.location }}
+                </span>
+              </div>
+
+              <div
+                contenteditable="true"
+                @input="updateEducation($event, 'date', index)"
+              >
+                {{ item.date }}
+              </div>
+            </div>
+
             <ul>
               <li
                 v-for="(desc, innerIndex) in item.description"
                 :key="innerIndex"
+                contenteditable="true"
+                @input="updateEducationDescription($event, index, innerIndex)"
               >
                 {{ desc }}
               </li>
@@ -175,7 +310,34 @@ export default {
           ],
         },
       ],
+      certifications: [
+        'AWS Cloud Practitoner (Amazon Web Services)',
+        'Vue JS Essentials with Vuex and Vue Router (Udemy)',
+      ],
     };
+  },
+  methods: {
+    updateHeadline(event, index) {
+      this.headlines[index] = event.target.innerText;
+    },
+    updateProperty(event, key) {
+      this[key] = event.target.innerText;
+    },
+    updateNestedProperty(event, key1, key2) {
+      this[key1][key2] = event.target.innerText;
+    },
+    updateExperience(event, key, index) {
+      this.experience[index][key] = event.target.innerText;
+    },
+    updateExperienceDescription(event, index1, index2) {
+      this.experience[index1]['description'][index2] = event.target.innerText;
+    },
+    updateEducation(event, key, index) {
+      this.education[index][key] = event.target.innerText;
+    },
+    updateEducationDescription(event, index1, index2) {
+      this.education[index1]['description'][index2] = event.target.innerText;
+    },
   },
 };
 </script>
