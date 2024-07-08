@@ -93,6 +93,9 @@
       </div>
     </Sidebar>
     <div class="resume-wrapper">
+      <CustomButton btn-type="primary-right" @click="saveConfig"
+        >Save configuration in browser</CustomButton
+      >
       <div
         id="resume"
         class="d-flex"
@@ -356,6 +359,7 @@ import SelectInput from './components/SelectInput.vue';
 import ImageUpload from './components/ImageUpload.vue';
 import CustomButton from './components/CustomButton.vue';
 import ExportPDF from './components/ExportPDF.vue';
+import CustomButton from './components/CustomButton.vue';
 
 export default {
   components: {
@@ -371,6 +375,7 @@ export default {
     ImageUpload,
     CustomButton,
     ExportPDF,
+    CustomButton,
   },
   data() {
     return {
@@ -558,6 +563,9 @@ export default {
     },
     toggleImageDisplay(isChecked) {
       this.showImage = isChecked;
+    },
+    saveConfig() {
+      localStorage.setItem('resume', JSON.stringify(this.$data));
     },
   },
 };
